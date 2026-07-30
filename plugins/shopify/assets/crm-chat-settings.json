@@ -1,0 +1,52 @@
+[
+  {
+    "name": "CRM Chat",
+    "settings": [
+      {
+        "type": "text",
+        "id": "crm_chat_api_key",
+        "label": "API Key",
+        "info": "Your CRM Chat API key (found in Settings > Integrations)"
+      },
+      {
+        "type": "text",
+        "id": "crm_chat_domain",
+        "label": "Domain",
+        "default": "https://api.crmchat.io"
+      },
+      {
+        "type": "color",
+        "id": "crm_chat_color",
+        "label": "Widget Color",
+        "default": "#2563eb"
+      },
+      {
+        "type": "select",
+        "id": "crm_chat_position",
+        "label": "Position",
+        "options": [
+          { "value": "bottom-right", "label": "Bottom Right" },
+          { "value": "bottom-left", "label": "Bottom Left" }
+        ],
+        "default": "bottom-right"
+      },
+      {
+        "type": "text",
+        "id": "crm_chat_language",
+        "label": "Language",
+        "default": "es"
+      },
+      {
+        "type": "select",
+        "id": "crm_chat_dark_mode",
+        "label": "Dark Mode",
+        "options": [
+          { "value": "auto", "label": "Auto" },
+          { "value": "light", "label": "Light" },
+          { "value": "dark", "label": "Dark" }
+        ],
+        "default": "auto"
+      }
+    ]
+  }
+]

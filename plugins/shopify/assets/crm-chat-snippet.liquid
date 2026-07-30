@@ -1,0 +1,23 @@
+{% comment %}
+  CRM Chat Widget - Shopify Theme Snippet
+  Add to theme.liquid before </body>:
+  {% render 'crm-chat-snippet' %}
+{% endcomment %}
+
+{% if settings.crm_chat_api_key != blank %}
+<script src="{{ settings.crm_chat_domain | default: 'https://api.crmchat.io' }}/widget/chat.js"></script>
+<script>
+  CRMChat.init({
+    apiKey: {{ settings.crm_chat_api_key | json }},
+    domain: {{ settings.crm_chat_domain | default: 'https://api.crmchat.io' | json }},
+    color: {{ settings.crm_chat_color | default: '#2563eb' | json }},
+    position: {{ settings.crm_chat_position | default: 'bottom-right' | json }},
+    language: {{ settings.crm_chat_language | default: 'es' | json }},
+    darkMode: {{ settings.crm_chat_dark_mode | default: 'auto' | json }},
+    {% if customer %}
+    visitorName: {{ customer.name | json }},
+    visitorEmail: {{ customer.email | json }},
+    {% endif %}
+  });
+</script>
+{% endif %}

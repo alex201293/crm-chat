@@ -1,0 +1,33 @@
+<?php
+/**
+ * CRM Chat Widget template for Magento 2.
+ * Included via layout XML in default.xml:
+ * <referenceContainer name="before.body.end">
+ *   <block class="Magento\Framework\View\Element\Template" template="CrmChat_Widget::widget.phtml"/>
+ * </referenceContainer>
+ */
+
+$helper = $this->helper(\Magento\Framework\App\Helper\AbstractHelper::class);
+$scopeConfig = $this->helper(\Magento\Framework\App\Config\ScopeConfigInterface::class);
+
+// In production, read from System > Configuration
+$apiKey = 'YOUR_API_KEY'; // From admin config
+$domain = 'https://api.crmchat.io';
+$color = '#2563eb';
+$position = 'bottom-right';
+$language = 'es';
+
+if (empty($apiKey) || $apiKey === 'YOUR_API_KEY') return;
+?>
+
+<script src="<?= $this->escapeUrl($domain) ?>/widget/chat.js"></script>
+<script>
+CRMChat.init({
+    apiKey: <?= $this->escapeJs($apiKey) ?>,
+    domain: <?= $this->escapeJs($domain) ?>,
+    color: <?= $this->escapeJs($color) ?>,
+    position: <?= $this->escapeJs($position) ?>,
+    language: <?= $this->escapeJs($language) ?>,
+    darkMode: 'auto'
+});
+</script>
