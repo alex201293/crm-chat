@@ -79,23 +79,39 @@ function renderWelcome(config: WidgetConfig): string {
 function renderMessage(msg: Message): string {
   const isUser = msg.sender_type === 'user';
   const isSystem = msg.sender_type === 'system';
-  const bubbleClass = isUser ? 'crm-bubble-user' : isSystem ? 'crm-bubble-system' : 'crm-bubble-agent';
-  const alignClass = isUser ? 'crm-message-user' : 'crm-message-agent';
+  const isAgent = msg.sender_type === 'agent';
+  const isAI = msg.sender_type === 'ai';
 
   if (isSystem) {
-    return `<div class="crm-message crm-message-system"><div class="crm-bubble ${bubbleClass}">${escapeHtml(msg.content)}</div></div>`;
+    return `
+      <div class="crm-message crm-message-system">
+        <div class="crm-bubble crm-bubble-system">
+          🔔 ${escapeHtml(msg.content)}
+        </div>
+      </div>`;
   }
 
+  const bubbleClass = isUser
+    ? 'crm-bubble-user'
+    : isAgent
+    ? 'crm-bubble-agent crm-bubble-human'
+    : 'crm-bubble-agent';
+
+  const alignClass = isUser ? 'crm-message-user' : 'crm-message-agent';
   const time = formatTime(msg.created_at);
-  const statusIcon = msg.status === 'sending' ? '⏳' : '';
+  const senderLabel = isAgent
+    ? `👨‍💼 ${escapeHtml(msg.sender_name)}`
+    : isAI
+    ? `🤖 Asistente`
+    : escapeHtml(msg.sender_name);
+  const statusIcon = msg.status === 'sending' ? ' ⏳' : '';
 
   return `
     <div class="crm-message ${alignClass}">
       <div class="crm-bubble ${bubbleClass}">
         <div class="crm-bubble-content">${escapeHtml(msg.content)}</div>
         <div class="crm-bubble-meta">
-          <span class="crm-bubble-time">${time}</span>
-          ${statusIcon}
+          <span class="crm-bubble-time">${senderLabel} · ${time}${statusIcon}</span>
         </div>
       </div>
     </div>

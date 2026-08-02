@@ -122,6 +122,13 @@ class SendMessageHandler:
         # 3. Update conversation
         is_from_agent = sender_type in (MessageSenderType.AGENT, MessageSenderType.AI)
         conversation.record_message(preview=command.content, is_from_agent=is_from_agent)
+
+        # If agent sends message → switch to human mode
+        if sender_type == MessageSenderType.AGENT and conversation.is_ai_handling:
+            conversation.is_ai_handling = False
+            conversation.assigned_agent_id = command.sender_id
+            conversation.status = conversation.status  # keep current status
+
         await self._conversation_repo.update(conversation)
 
         # 4. Publish event
@@ -271,7 +278,7 @@ class SendMessageHandler:
                     system_msg = Message.create_system_message(
                         tenant_id=tenant_id,
                         conversation_id=conversation_id,
-                        content="Transferring to a human agent. Please wait a moment.",
+                        content="Un agente humano te atenderá en breve. Por favor espera un momento.",
                     )
                     await self._message_repo.create(system_msg)
 

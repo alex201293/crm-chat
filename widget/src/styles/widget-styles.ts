@@ -103,6 +103,10 @@ export function createWidgetStyles(config: WidgetConfig): string {
       background: ${bgSecondary}; color: ${text};
       border-bottom-left-radius: 4px;
     }
+    .crm-bubble-human {
+      background: #dcfce7; color: #166534;
+      border-bottom-left-radius: 4px;
+    }
     .crm-bubble-system {
       background: transparent; color: ${textMuted};
       font-size: 12px; font-style: italic; text-align: center;

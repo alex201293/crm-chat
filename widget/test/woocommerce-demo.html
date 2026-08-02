@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mi Tienda WooCommerce - Demo</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, sans-serif; background: #f0f0f1; color: #333; }
+
+    /* WooCommerce header */
+    .wc-header {
+      background: #fff;
+      border-bottom: 1px solid #ddd;
+      padding: 15px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .wc-logo { font-size: 22px; font-weight: 700; color: #7f54b3; }
+    .wc-nav a { margin-left: 20px; text-decoration: none; color: #555; font-size: 14px; }
+    .wc-cart { background: #7f54b3; color: white; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-size: 14px; }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, #7f54b3 0%, #a742c8 100%);
+      color: white; text-align: center; padding: 60px 20px;
+    }
+    .hero h1 { font-size: 36px; margin-bottom: 12px; }
+    .hero p { font-size: 18px; opacity: 0.9; margin-bottom: 24px; }
+    .hero-btn {
+      background: white; color: #7f54b3; padding: 14px 32px;
+      border-radius: 6px; font-size: 16px; font-weight: 600;
+      text-decoration: none; display: inline-block;
+    }
+
+    /* Products */
+    .section { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
+    .section h2 { font-size: 24px; margin-bottom: 24px; color: #222; }
+    .products { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; }
+    .product-card {
+      background: white; border-radius: 8px; overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08); transition: transform .2s;
+    }
+    .product-card:hover { transform: translateY(-3px); }
+    .product-img {
+      height: 180px; display: flex; align-items: center; justify-content: center;
+      font-size: 64px;
+    }
+    .product-info { padding: 16px; }
+    .product-name { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .product-price { font-size: 18px; font-weight: 700; color: #7f54b3; margin-bottom: 12px; }
+    .product-desc { font-size: 13px; color: #666; margin-bottom: 14px; line-height: 1.4; }
+    .btn-cart {
+      width: 100%; background: #7f54b3; color: white; border: none;
+      padding: 10px; border-radius: 5px; font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: background .2s;
+    }
+    .btn-cart:hover { background: #6a3d9e; }
+
+    /* Widget info banner */
+    .info-banner {
+      background: #e8f4f8; border: 1px solid #b8dde8; border-radius: 8px;
+      padding: 16px 20px; margin: 20px auto; max-width: 1100px;
+      display: flex; align-items: center; gap: 12px; font-size: 14px; color: #444;
+    }
+    .info-banner strong { color: #0077aa; }
+
+    footer { text-align: center; padding: 40px; color: #888; font-size: 13px; }
+  </style>
+</head>
+<body>
+
+<!-- Simula encabezado de WooCommerce -->
+<header class="wc-header">
+  <div class="wc-logo">🛒 MiTienda.com</div>
+  <nav class="wc-nav">
+    <a href="#">Inicio</a>
+    <a href="#">Productos</a>
+    <a href="#">Nosotros</a>
+    <a href="#">Contacto</a>
+    <a href="#" class="wc-cart">🛒 Carrito (0)</a>
+  </nav>
+</header>
+
+<!-- Hero -->
+<div class="hero">
+  <h1>Bienvenido a Mi Tienda</h1>
+  <p>Los mejores productos con la mejor atención al cliente con IA</p>
+  <a href="#" class="hero-btn">Ver Productos</a>
+</div>
+
+<!-- Banner informativo -->
+<div class="info-banner">
+  💬 <span><strong>Plugin CRM Chat activo</strong> — El widget de chat está corriendo abajo a la derecha. Escríbele algo y la IA responderá automáticamente.</span>
+</div>
+
+<!-- Productos -->
+<div class="section">
+  <h2>Productos Destacados</h2>
+  <div class="products">
+    <div class="product-card">
+      <div class="product-img" style="background:#fef3cd">📱</div>
+      <div class="product-info">
+        <div class="product-name">Smartphone Pro X</div>
+        <div class="product-price">$599.00</div>
+        <div class="product-desc">Pantalla AMOLED 6.7", 256GB, cámara 108MP.</div>
+        <button class="btn-cart">Agregar al carrito</button>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img" style="background:#d4edda">💻</div>
+      <div class="product-info">
+        <div class="product-name">Laptop UltraBook</div>
+        <div class="product-price">$1,299.00</div>
+        <div class="product-desc">Intel i7, 16GB RAM, SSD 512GB, Windows 11.</div>
+        <button class="btn-cart">Agregar al carrito</button>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img" style="background:#e2d9f3">🎧</div>
+      <div class="product-info">
+        <div class="product-name">Audífonos Wireless</div>
+        <div class="product-price">$89.00</div>
+        <div class="product-desc">Cancelación de ruido, 30h batería, Bluetooth 5.0.</div>
+        <button class="btn-cart">Agregar al carrito</button>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img" style="background:#fce8e6">⌚</div>
+      <div class="product-info">
+        <div class="product-name">Smartwatch Elite</div>
+        <div class="product-price">$249.00</div>
+        <div class="product-desc">GPS, monitor cardíaco, resistente al agua.</div>
+        <button class="btn-cart">Agregar al carrito</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  © 2025 MiTienda.com — Powered by WooCommerce<br/>
+  <small>Chat con IA activo gracias al plugin CRM Chat</small>
+</footer>
+
+<!-- ============================================================
+  PLUGIN CRM CHAT PARA WOOCOMMERCE
+  Así es exactamente como lo instala el plugin en WordPress:
+  ============================================================ -->
+<script src="../dist/chat.js"></script>
+<script>
+  CRMChat.init({
+    apiKey: "1fd452cb-061d-47b1-a1e3-5eaca43e498b",  // Tu Tenant ID
+    domain: "http://localhost:8000",
+    wsUrl: "ws://localhost:8000/ws",
+    color: "#7f54b3",
+    position: "bottom-right",
+    language: "es",
+    title: "Soporte MiTienda",
+    subtitle: "Te respondemos al instante 🚀",
+    welcomeMessage: "¡Hola! Soy el asistente de MiTienda. ¿En qué puedo ayudarte hoy?",
+    placeholder: "Escribe tu mensaje...",
+    darkMode: "auto",
+  });
+</script>
+
+</body>
+</html>

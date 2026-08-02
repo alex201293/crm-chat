@@ -20,6 +20,7 @@ export class ChatWidget {
   private visitorId: string;
   private messages: Message[] = [];
   private isTyping = false;
+  private pollInterval: ReturnType<typeof setInterval> | null = null;
   private eventListeners: Map<string, ((...args: unknown[]) => void)[]> = new Map();
 
   constructor(config: WidgetConfig) {
@@ -53,6 +54,7 @@ export class ChatWidget {
   }
 
   destroy(): void {
+    if (this.pollInterval) clearInterval(this.pollInterval);
     this.socket?.disconnect();
     this.container?.remove();
     this.container = null;
@@ -136,6 +138,8 @@ export class ChatWidget {
       }
 
       this.render();
+      // Start polling to receive agent replies
+      this.startPolling();
       this.emit('messageSent', response.message);
     } catch (error) {
       // Mark as failed
@@ -230,12 +234,37 @@ export class ChatWidget {
           created_at: m.created_at,
         }));
         this.render();
+        // Start polling once we have a conversation
+        this.startPolling();
       } catch {
-        // Conversation may have expired, start fresh
         this.conversationId = null;
         localStorage.removeItem(`crm_chat_conv_${this.config.apiKey}`);
       }
     }
+  }
+
+  private startPolling(): void {
+    if (this.pollInterval) return;
+    this.pollInterval = setInterval(async () => {
+      if (!this.conversationId) return;
+      try {
+        const result = await this.api.getMessages(this.conversationId);
+        const newMessages: Message[] = result.data.map((m: any) => ({
+          id: m.id,
+          content: m.content,
+          sender_type: m.sender_type,
+          sender_name: m.sender_name,
+          created_at: m.created_at,
+        }));
+        // Check if there are new messages
+        if (newMessages.length !== this.messages.length) {
+          this.messages = newMessages;
+          this.render();
+        }
+      } catch {
+        // ignore polling errors
+      }
+    }, 3000); // Poll every 3 seconds
   }
 
   private connectSocket(): void {
