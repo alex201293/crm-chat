@@ -256,15 +256,17 @@ export class ChatWidget {
           sender_name: m.sender_name,
           created_at: m.created_at,
         }));
-        // Check if there are new messages
-        if (newMessages.length !== this.messages.length) {
+        // Compare by last message id to detect new messages
+        const lastNew = newMessages[newMessages.length - 1]?.id;
+        const lastCurrent = this.messages[this.messages.length - 1]?.id;
+        if (lastNew !== lastCurrent || newMessages.length !== this.messages.length) {
           this.messages = newMessages;
           this.render();
         }
       } catch {
         // ignore polling errors
       }
-    }, 3000); // Poll every 3 seconds
+    }, 3000);
   }
 
   private connectSocket(): void {

@@ -123,11 +123,12 @@ class SendMessageHandler:
         is_from_agent = sender_type in (MessageSenderType.AGENT, MessageSenderType.AI)
         conversation.record_message(preview=command.content, is_from_agent=is_from_agent)
 
-        # If agent sends message → switch to human mode
-        if sender_type == MessageSenderType.AGENT and conversation.is_ai_handling:
+        # If agent sends message → switch to human mode permanently
+        if sender_type == MessageSenderType.AGENT:
             conversation.is_ai_handling = False
-            conversation.assigned_agent_id = command.sender_id
-            conversation.status = conversation.status  # keep current status
+            if command.sender_id:
+                conversation.assigned_agent_id = command.sender_id
+            conversation.status = "active"
 
         await self._conversation_repo.update(conversation)
 

@@ -47,10 +47,15 @@ export default function ChatPage() {
   const [sending, setSending] = useState(false);
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState("");
+  const [error, setError] = useState("");
 
-  // Get token
+  // Get token on mount
   useEffect(() => {
     const t = localStorage.getItem("access_token") || "";
+    if (!t) {
+      window.location.href = "/login";
+      return;
+    }
     setToken(t);
   }, []);
 
@@ -59,20 +64,28 @@ export default function ChatPage() {
     if (!token) return;
     const load = async () => {
       setLoading(true);
+      setError("");
       try {
         const res = await fetch(`${API}/api/v1/chat/conversations`, {
           headers: { Authorization: `Bearer ${token}` },
         });
+        if (res.status === 401) {
+          localStorage.clear();
+          window.location.href = "/login";
+          return;
+        }
         const data = await res.json();
-        setConversations(data.data || []);
-      } catch {
-        // ignore
+        if (data.data) {
+          setConversations(data.data);
+        }
+      } catch (e) {
+        setError(`Error conectando al backend: ${API}`);
       } finally {
         setLoading(false);
       }
     };
     load();
-    const interval = setInterval(load, 5000); // refresh every 5s
+    const interval = setInterval(load, 5000);
     return () => clearInterval(interval);
   }, [token]);
 
@@ -140,7 +153,14 @@ export default function ChatPage() {
           {loading && (
             <p className="p-4 text-sm text-gray-400 text-center">Cargando...</p>
           )}
-          {!loading && conversations.length === 0 && (
+          {error && (
+            <div className="p-4 text-sm text-red-500 text-center bg-red-50 m-2 rounded">
+              {error}
+              <br/>
+              <span className="text-xs">API: {API}</span>
+            </div>
+          )}
+          {!loading && !error && conversations.length === 0 && (
             <div className="p-6 text-center">
               <p className="text-4xl mb-2">💬</p>
               <p className="text-sm text-gray-500">Sin conversaciones aún.</p>
